@@ -1,0 +1,15 @@
+.appBar {
+  height: 64px;
+  display: flex;
+}
+
+.headerTitle {
+  font-family: Dosis;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22.75px;
+  letter-spacing: 0.25px;
+  text-align: left;
+  margin: auto 0;
+  margin-left: 16px;
+}

@@ -5,7 +5,13 @@
   "jsxBracketSameLine": true,
   "proseWrap": "always",
   "endOfLine": "lf",
-  "importOrder": ["^react", "<THIRD_PARTY_MODULES>", "^[~/]", "^[./]"],
+  "importOrder": [
+    "^react",
+    "<THIRD_PARTY_MODULES>",
+    "^[~/]",
+    "^[./]",
+    "^\\w+$"
+  ],
   "importOrderSeparation": false,
   "importOrderSortSpecifiers": false,
   "plugins": ["@trivago/prettier-plugin-sort-imports"]

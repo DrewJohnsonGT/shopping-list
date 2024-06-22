@@ -2,59 +2,40 @@ import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const userData: Prisma.UserCreateInput[] = [
+const ITEMS: Prisma.ItemCreateInput[] = [
   {
-    name: "Alice",
-    email: "alice@prisma.io",
-    posts: {
-      create: [
-        {
-          title: "Join the Prisma Discord",
-          content: "https://pris.ly/discord",
-          published: true,
-        },
-      ],
-    },
+    name: "Tomatoes",
+    description: "The little green ones",
+    quantity: 5,
+    checked: false,
   },
   {
-    name: "Nilu",
-    email: "nilu@prisma.io",
-    posts: {
-      create: [
-        {
-          title: "Follow Prisma on Twitter",
-          content: "https://www.twitter.com/prisma",
-          published: true,
-        },
-      ],
-    },
+    name: "Potatoes",
+    description: "The little red ones",
+    quantity: 10,
+    checked: false,
   },
   {
-    name: "Mahmoud",
-    email: "mahmoud@prisma.io",
-    posts: {
-      create: [
-        {
-          title: "Ask a question about Prisma on GitHub",
-          content: "https://www.github.com/prisma/prisma/discussions",
-          published: true,
-        },
-        {
-          title: "Prisma on YouTube",
-          content: "https://pris.ly/youtube",
-        },
-      ],
-    },
+    name: "Carrots",
+    description: "The little orange ones",
+    quantity: 15,
+    checked: false,
+  },
+  {
+    name: "Cucumbers",
+    description: "The little green ones",
+    quantity: 20,
+    checked: true,
   },
 ];
 
 async function main() {
-  console.log(`Start seeding ...`);
-  for (const u of userData) {
-    const user = await prisma.user.create({
-      data: u,
+  console.log("Start seeding ...");
+  for (const item of ITEMS) {
+    const user = await prisma.item.create({
+      data: item,
     });
-    console.log(`Created user with id: ${user.id}`);
+    console.log(`Created item with id: ${user.id}`);
   }
   console.log(`Seeding finished.`);
 }

@@ -29,7 +29,8 @@
     /* Paths */
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "~/schema": ["../server/prisma/generated/zod"]
     }
   },
   "include": ["src"]

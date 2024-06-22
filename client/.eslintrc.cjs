@@ -1,0 +1,50 @@
+module.exports = {
+  root: true,
+  env: { browser: true, es2024: true },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/strict-type-checked',
+    'plugin:react-hooks/recommended',
+    'plugin:sort/recommended',
+    'plugin:react/recommended',
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'vite-env.d.ts'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+    project: ['tsconfig.json'],
+    tsconfigRootDir: __dirname,
+  },
+  plugins: ['react-refresh', 'sort'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  rules: {
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    '@typescript-eslint/comma-dangle': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/indent': 'off',
+    '@typescript-eslint/member-delimiter-style': 'off',
+    '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/semi': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    'comma-dangle': 'off',
+    'max-lines': ['error', 300],
+    'multiline-ternary': 'off',
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'sort/imports': 'off',
+    indent: 'off',
+    semi: 'off',
+  },
+};

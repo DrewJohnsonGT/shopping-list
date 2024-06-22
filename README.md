@@ -1,5 +1,21 @@
 # Shopping List
 
+## Technologies
+
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Material-UI](https://material-ui.com/)
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/) - to run the client react app, nodejs server, and postgres database in separate containers
+- [Prisma](https://www.prisma.io/)
+- [Zod](https://zod.dev/) +
+  [Zod Prisma Types](https://www.npmjs.com/package/zod-prisma-types) - I
+  originally was manually defining my zod schemas and TypeScript types in tandem
+  with the Prisma schema. But I found this library and it made the process much
+  easier.
+
 ## How to run locally
 
 1. Run the project containers

@@ -8,15 +8,14 @@ datasource db {
 }
 
 generator zod {
-  provider                  = "zod-prisma-types"
-  createRelationValuesTypes = true
-  createPartialTypes        = true
+  provider           = "zod-prisma-types"
+  createPartialTypes = true
 }
 
 model Item {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String
   quantity    Int
-  checked     Boolean
+  checked     Boolean?
 }

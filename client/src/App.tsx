@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AppBar, Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
-import { getItems } from '~/api/getItems';
+import { getItems } from '~/api/item';
 import { EmptyMessage, ItemModal } from '~/components';
 import { useAppDispatch, useAppSelector } from '~/state/hooks';
 import { setIsLoading, setItems } from '~/state/slice';

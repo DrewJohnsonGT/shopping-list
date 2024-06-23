@@ -8,6 +8,15 @@ import { store } from '~/state/store';
 import './index.css';
 
 const theme = createTheme({
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 0,
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       main: '#4d80b7',

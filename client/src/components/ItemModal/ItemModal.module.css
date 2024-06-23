@@ -3,3 +3,24 @@
   right: 0.5rem;
   bottom: 0.5rem;
 }
+
+.headerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+  margin-bottom: 2rem;
+  border-bottom: 0.5px solid #d5dfe9;
+}
+
+.content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.paper {
+  min-height: 768px;
+  min-width: 560px;
+}

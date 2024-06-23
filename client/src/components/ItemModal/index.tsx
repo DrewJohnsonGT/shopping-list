@@ -5,16 +5,31 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  MenuItem,
   TextField,
 } from '@mui/material';
+import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '~/state/hooks';
 import { setIsItemModalOpen } from '~/state/slice';
+import styles from './ItemModal.module.css';
+
+const MAX_QUANTITY = 10;
+const MAX_DESCRIPTION_LENGTH = 100;
+const QUANTITY_OPTIONS = Array.from({ length: MAX_QUANTITY }, (_, i) => i + 1);
+
+const CharacterCount = ({ count, max }: { count: number; max: number }) => (
+  <Box className={styles.characterCount} component="span">
+    <Box color={count >= max ? 'error.main' : undefined} component="span">
+      {count} / {max}
+    </Box>
+  </Box>
+);
 
 export const ItemModal = () => {
   const item = useAppSelector((state) => state.cart.itemModalItem);
   const isItemModalOpen = useAppSelector((state) => state.cart.isItemModalOpen);
-  const [name, setName] = useState(item?.name);
-  const [description, setDescription] = useState(item?.description);
+  const [name, setName] = useState(item?.name ?? '');
+  const [description, setDescription] = useState(item?.description ?? '');
   const [quantity, setQuantity] = useState(item?.quantity || 1);
 
   const dispatch = useAppDispatch();
@@ -35,20 +50,34 @@ export const ItemModal = () => {
           margin="dense"
         />
         <TextField
+          sx={{ position: 'relative' }}
+          helperText={
+            <CharacterCount
+              count={description.length}
+              max={MAX_DESCRIPTION_LENGTH}
+            />
+          }
           label="Item Description"
-          value={description}
+          inputProps={{ maxLength: MAX_DESCRIPTION_LENGTH }}
           onChange={(e) => setDescription(e.target.value)}
+          value={description}
+          rows={5}
+          multiline
           fullWidth
-          margin="dense"
         />
         <TextField
+          select
           label="Quantity"
-          type="number"
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
           fullWidth
-          margin="dense"
-        />
+          margin="dense">
+          {QUANTITY_OPTIONS.map((_, index) => (
+            <MenuItem key={index} value={index + 1}>
+              {index + 1}
+            </MenuItem>
+          ))}
+        </TextField>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="secondary">

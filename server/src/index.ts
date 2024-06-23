@@ -12,7 +12,8 @@ app.use(express.json());
 
 app.get<Item[]>("/items", async (_req, res) => {
   const items = await prisma.item.findMany();
-  res.json(items);
+  // res.json(items);
+  res.json([]);
 });
 
 app.listen(PORT, () =>

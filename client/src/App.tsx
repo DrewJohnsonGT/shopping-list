@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { AppBar, Box, Typography } from '@mui/material';
+import { AppBar, Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 import { getItems } from '~/api/getItems';
+import { EmptyMessage, ItemModal } from '~/components';
 import { useAppDispatch, useAppSelector } from '~/state/hooks';
 import { setIsLoading, setItems } from '~/state/slice';
 import styles from './App.module.css';
@@ -26,18 +27,20 @@ export const App = () => {
   }, [dispatch]);
 
   return (
-    <Box sx={{ height: '100%' }}>
+    <main className={styles.page}>
       <AppBar position="static" className={styles.appBar}>
         <Typography variant="h1" className={styles.headerTitle}>
           SHOPPING LIST
         </Typography>
       </AppBar>
-      <div>
+      <div className={styles.content}>
         {isLoading && <CircularProgress size="6rem" thickness={2} />}
+        {!isLoading && items.length === 0 && <EmptyMessage />}
         {items.map((item) => (
           <div key={item.id}>{item.name}</div>
         ))}
       </div>
-    </Box>
+      <ItemModal />
+    </main>
   );
 };

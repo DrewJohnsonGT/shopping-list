@@ -38,6 +38,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     '@typescript-eslint/semi': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
     'comma-dangle': 'off',
     'max-lines': ['error', 300],
     'multiline-ternary': 'off',

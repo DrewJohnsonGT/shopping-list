@@ -1,6 +1,6 @@
 import { Button, Container, Typography } from '@mui/material';
 import { useAppDispatch } from '~/state/hooks';
-import { setIsItemModalOpen } from '~/state/slice';
+import { setItemModal } from '~/state/slice';
 import styles from './EmptyMessage.module.css';
 
 export const EmptyMessage = () => {
@@ -14,7 +14,7 @@ export const EmptyMessage = () => {
         variant="contained"
         color="secondary"
         onClick={() => {
-          dispatch(setIsItemModalOpen(true));
+          dispatch(setItemModal({ isOpen: true }));
         }}>
         Add your first item
       </Button>

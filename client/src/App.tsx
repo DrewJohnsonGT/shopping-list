@@ -1,31 +1,11 @@
-import { useEffect } from 'react';
 import { AppBar, Typography } from '@mui/material';
-import { CircularProgress } from '@mui/material';
-import { getItems } from '~/api/item';
-import { EmptyMessage, ItemModal } from '~/components';
-import { useAppDispatch, useAppSelector } from '~/state/hooks';
-import { setIsLoading, setItems } from '~/state/slice';
+import { ItemList, ItemModal } from '~/components';
 import styles from './App.module.css';
+import { useAppSelector } from './state/hooks';
 
 export const App = () => {
-  const items = useAppSelector((state) => state.cart.items);
-  const isLoading = useAppSelector((state) => state.cart.isLoading);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(setIsLoading(true));
-    getItems()
-      .then((items) => {
-        dispatch(setItems(items));
-      })
-      .catch((err: unknown) => {
-        console.error(err);
-      })
-      .finally(() => {
-        dispatch(setIsLoading(false));
-      });
-  }, [dispatch]);
-
+  const itemModalItem = useAppSelector((state) => state.cart.itemModalItem);
+  const isItemModalOpen = useAppSelector((state) => state.cart.isItemModalOpen);
   return (
     <main className={styles.page}>
       <AppBar position="static" className={styles.appBar}>
@@ -34,13 +14,9 @@ export const App = () => {
         </Typography>
       </AppBar>
       <div className={styles.content}>
-        {isLoading && <CircularProgress size="6rem" thickness={2} />}
-        {!isLoading && items.length === 0 && <EmptyMessage />}
-        {items.map((item) => (
-          <div key={item.id}>{item.name}</div>
-        ))}
+        <ItemList />
       </div>
-      <ItemModal />
+      {isItemModalOpen && <ItemModal item={itemModalItem} />}
     </main>
   );
 };

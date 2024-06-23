@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App } from '~/App';
 import { store } from '~/state/store';
 import './index.css';
+
+const queryClient = new QueryClient();
 
 const theme = createTheme({
   components: {
@@ -32,7 +35,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <App />
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
         </Provider>
       </ThemeProvider>
     </StyledEngineProvider>

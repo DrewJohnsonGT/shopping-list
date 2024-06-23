@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { API_URL } from '~/constants';
 import { Item } from '~/schema';
 
@@ -28,4 +29,54 @@ export const updateItem = async (
     method: 'PUT',
   });
   return response.json() as Promise<Item>;
+};
+
+export const deleteItem = async (id: number): Promise<Item> => {
+  const response = await fetch(`${API_URL}/items/${String(id)}`, {
+    method: 'DELETE',
+  });
+  return response.json() as Promise<Item>;
+};
+
+export const useItems = () => {
+  const queryClient = useQueryClient();
+
+  const {
+    data: items,
+    error,
+    isLoading,
+  } = useQuery({
+    queryFn: getItems,
+    queryKey: ['items'],
+  });
+
+  const createItemMutation = useMutation({
+    mutationFn: createItem,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['items'] });
+    },
+  });
+
+  const updateItemMutation = useMutation({
+    mutationFn: updateItem,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['items'] });
+    },
+  });
+
+  const deleteItemMutation = useMutation({
+    mutationFn: deleteItem,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['items'] });
+    },
+  });
+
+  return {
+    createItem: createItemMutation.mutate,
+    deleteItem: deleteItemMutation.mutate,
+    error,
+    isLoading,
+    items,
+    updateItem: updateItemMutation.mutate,
+  };
 };

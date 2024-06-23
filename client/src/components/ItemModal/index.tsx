@@ -14,12 +14,13 @@ import {
   useTheme,
 } from '@mui/material';
 import { Box } from '@mui/material';
-import { createItem, updateItem } from '~/api/item';
-import { useAppDispatch, useAppSelector } from '~/state/hooks';
-import { setIsItemModalOpen } from '~/state/slice';
+import { useItems } from '~/api/item';
+import { Item } from '~/schema';
+import { useAppDispatch } from '~/state/hooks';
+import { setItemModal } from '~/state/slice';
 import styles from './ItemModal.module.css';
 
-const MAX_QUANTITY = 10;
+const MAX_QUANTITY = 20;
 const MAX_DESCRIPTION_LENGTH = 100;
 const QUANTITY_OPTIONS = Array.from({ length: MAX_QUANTITY }, (_, i) => i + 1);
 
@@ -31,37 +32,43 @@ const CharacterCount = ({ count, max }: { count: number; max: number }) => (
   </Box>
 );
 
-export const ItemModal = () => {
+interface ItemModalProps {
+  item: Item | null;
+}
+
+export const ItemModal = ({ item }: ItemModalProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  const item = useAppSelector((state) => state.cart.itemModalItem);
-  const isItemModalOpen = useAppSelector((state) => state.cart.isItemModalOpen);
+  const { createItem, updateItem } = useItems();
+
   const [name, setName] = useState(item?.name ?? '');
   const [description, setDescription] = useState(item?.description ?? '');
-  const [quantity, setQuantity] = useState(item?.quantity || 1);
+  const [quantity, setQuantity] = useState(item?.quantity ?? 1);
 
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch(setIsItemModalOpen(false));
-    setName('');
-    setDescription('');
-    setQuantity(1);
+    dispatch(setItemModal({ isOpen: false }));
   };
 
-  const handleSubmit = async () => {
-    if (item) {
-      await updateItem({ ...item, description, name, quantity });
+  const handleSubmit = () => {
+    if (item?.id) {
+      updateItem(item);
     } else {
-      await createItem({ checked: false, description, name, quantity });
+      createItem({
+        checked: false,
+        description,
+        name,
+        quantity,
+      });
     }
     handleClose();
   };
 
   return (
     <Dialog
-      open={isItemModalOpen}
+      open={true}
       onClose={handleClose}
       fullScreen={fullScreen}
       PaperProps={{
@@ -116,13 +123,7 @@ export const ItemModal = () => {
           Cancel
         </Button>
         <Button
-          onClick={() => {
-            // https://typescript-eslint.io/rules/no-misused-promises/#checksvoidreturn
-            const handle = async () => {
-              await handleSubmit();
-            };
-            handle().catch((err: unknown) => console.log(err));
-          }}
+          onClick={handleSubmit}
           variant="contained"
           color="secondary"
           disabled={!name || !description}>

@@ -1,2 +1,2 @@
-export { EmptyMessage } from '~/components/EmptyMessage';
+export { ItemList } from '~/components/ItemList';
 export { ItemModal } from '~/components/ItemModal';

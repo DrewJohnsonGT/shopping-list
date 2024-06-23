@@ -1,11 +1,30 @@
+import { useEffect } from 'react';
 import { AppBar, Box, Typography } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import { getItems } from '~/api/getItems';
 import { useAppDispatch, useAppSelector } from '~/state/hooks';
-import { decrement, increment } from '~/state/slice';
+import { setIsLoading, setItems } from '~/state/slice';
 import styles from './App.module.css';
 
 export const App = () => {
-  const count = useAppSelector((state) => state.counter.value);
+  const items = useAppSelector((state) => state.cart.items);
+  const isLoading = useAppSelector((state) => state.cart.isLoading);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setIsLoading(true));
+    getItems()
+      .then((items) => {
+        dispatch(setItems(items));
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+      })
+      .finally(() => {
+        dispatch(setIsLoading(false));
+      });
+  }, [dispatch]);
+
   return (
     <Box sx={{ height: '100%' }}>
       <AppBar position="static" className={styles.appBar}>
@@ -14,19 +33,10 @@ export const App = () => {
         </Typography>
       </AppBar>
       <div>
-        <div>
-          <button
-            aria-label="Increment value"
-            onClick={() => dispatch(increment())}>
-            Increment
-          </button>
-          <span>{count}</span>
-          <button
-            aria-label="Decrement value"
-            onClick={() => dispatch(decrement())}>
-            Decrement
-          </button>
-        </div>
+        {isLoading && <CircularProgress size="6rem" thickness={2} />}
+        {items.map((item) => (
+          <div key={item.id}>{item.name}</div>
+        ))}
       </div>
     </Box>
   );

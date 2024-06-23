@@ -1,38 +1,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Item } from '~/schema';
 import type { RootState } from '~/state/store';
+// This prevents a strange type error: https://github.com/reduxjs/redux-toolkit/issues/1806
 import 'immer';
 
-// Define a type for the slice state
 export interface CounterState {
-  value: number;
+  isLoading: boolean;
+  items: Item[];
 }
 
-// Define the initial state using that type
 const initialState = {
-  value: 0,
+  isLoading: false,
+  items: [] as Item[],
 };
 
-export const counterSlice = createSlice({
-  // `createSlice` will infer the state type from the `initialState` argument
+const counterSlice = createSlice({
   initialState,
-  name: 'counter',
+  name: 'cart',
   reducers: {
-    decrement: (state) => {
-      state.value -= 1;
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
-    increment: (state) => {
-      state.value += 1;
-    },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    setItems: (state, action: PayloadAction<Item[]>) => {
+      state.items = action.payload;
     },
   },
 });
 
-export const { decrement, increment, incrementByAmount } = counterSlice.actions;
+export const { setIsLoading, setItems } = counterSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.counter.value;
+export const selectItems = (state: RootState) => state.cart.items;
 
-export default counterSlice.reducer;
+export const cartReducer = counterSlice.reducer;

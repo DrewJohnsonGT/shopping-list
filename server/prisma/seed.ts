@@ -2,7 +2,7 @@ import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const NUMBER_OF_ITEMS = 25;
+const NUMBER_OF_ITEMS = 5;
 
 const ITEMS: Prisma.ItemCreateInput[] = Array.from(
   { length: NUMBER_OF_ITEMS },

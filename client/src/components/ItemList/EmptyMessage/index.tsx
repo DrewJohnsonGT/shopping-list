@@ -13,6 +13,7 @@ export const EmptyMessage = () => {
       <Button
         variant="contained"
         color="secondary"
+        sx={{ textTransform: 'none' }}
         onClick={() => {
           dispatch(setItemModal({ isOpen: true }));
         }}>

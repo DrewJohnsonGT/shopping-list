@@ -9,19 +9,36 @@ import styles from './ItemList.module.css';
 
 export const ItemList = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, items } = useItems();
+  const { deleteItems, isLoading, items } = useItems();
   if (isLoading) {
-    return <CircularProgress size="6rem" thickness={2} />;
+    return (
+      <CircularProgress size="6rem" thickness={2} sx={{ margin: 'auto' }} />
+    );
   }
   if (!items?.length) {
     return <EmptyMessage />;
   }
+  const hasCheckedItems = items.some((item) => item.checked);
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <Typography variant="h6" fontSize={18} sx={{ userSelect: 'none' }}>
+        <Typography
+          variant="h6"
+          fontSize={18}
+          sx={{ marginRight: 'auto', userSelect: 'none' }}>
           Your items
         </Typography>
+        {hasCheckedItems && (
+          <Button
+            variant="text"
+            color="primary"
+            sx={{ textTransform: 'none' }}
+            onClick={() => {
+              deleteItems(items.filter((item) => item.checked));
+            }}>
+            Clear Checked Items
+          </Button>
+        )}
         <Button
           variant="contained"
           color="secondary"
@@ -30,21 +47,19 @@ export const ItemList = () => {
           Add Item
         </Button>
       </div>
-      <div className={styles.items}>
-        {items
-          .sort((a, b) => {
-            if (a.createdAt > b.createdAt) {
-              return 1;
-            }
-            if (a.createdAt < b.createdAt) {
-              return -1;
-            }
-            return 0;
-          })
-          .map((item) => (
-            <ItemCard key={item.id} item={item} />
-          ))}
-      </div>
+      {items
+        .sort((a, b) => {
+          if (a.createdAt > b.createdAt) {
+            return 1;
+          }
+          if (a.createdAt < b.createdAt) {
+            return -1;
+          }
+          return 0;
+        })
+        .map((item) => (
+          <ItemCard key={item.id} item={item} />
+        ))}
       <DeleteItemModal />
     </div>
   );

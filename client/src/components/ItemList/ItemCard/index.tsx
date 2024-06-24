@@ -1,4 +1,4 @@
-import { Delete, Edit } from '@mui/icons-material';
+import { DeleteOutlined, EditOutlined } from '@mui/icons-material';
 import { Box, Checkbox, IconButton, Typography } from '@mui/material';
 import { useItems } from '~/api/item';
 import { Item } from '~/schema';
@@ -38,7 +38,16 @@ export const ItemCard = ({ item }: ItemCardProps) => {
       <Box
         className={styles.text}
         sx={{ textDecoration: item.checked ? 'line-through' : 'none' }}>
-        <Typography fontSize={16}>{item.name}</Typography>
+        <Typography
+          fontSize={16}
+          sx={{
+            color: (theme) =>
+              item.checked
+                ? theme.palette.primary.main
+                : theme.palette.text.primary,
+          }}>
+          {item.name}
+        </Typography>
         <Typography
           fontSize={14}
           color={(theme) => theme.palette.text.secondary}>
@@ -47,10 +56,10 @@ export const ItemCard = ({ item }: ItemCardProps) => {
       </Box>
       <IconButton
         onClick={() => dispatch(setItemModal({ isOpen: true, item }))}>
-        <Edit />
+        <EditOutlined />
       </IconButton>
       <IconButton onClick={() => dispatch(setDeleteItemModalItem(item))}>
-        <Delete />
+        <DeleteOutlined />
       </IconButton>
     </Box>
   );

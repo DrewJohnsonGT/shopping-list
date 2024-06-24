@@ -62,6 +62,23 @@ app.delete<Item>("/items/:id", async (req, res, next) => {
   }
 });
 
+// DELETE all items that are passed into the request body
+app.delete<Item[]>("/items", async (req, res, next) => {
+  try {
+    const itemIdsToDelete = (req.body as Item[]).map((item) => item.id);
+    const items = await prisma.item.deleteMany({
+      where: {
+        id: {
+          in: itemIdsToDelete,
+        },
+      },
+    });
+    res.json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
 const errorHandlerMiddleware = (
   error: unknown,
   _req: express.Request,

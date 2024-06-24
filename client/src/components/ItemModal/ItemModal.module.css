@@ -6,6 +6,7 @@
 
 .headerBar {
   display: flex;
+  font-family: Dosis;
   justify-content: space-between;
   align-items: center;
   background-color: #fafafa;
@@ -21,6 +22,6 @@
 }
 
 .paper {
-  min-height: 768px;
-  min-width: 560px;
+  height: 768px;
+  width: 560px;
 }

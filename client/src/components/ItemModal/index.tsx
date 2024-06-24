@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SkipNext } from '@mui/icons-material';
+import { LastPageSharp } from '@mui/icons-material';
 import {
   Button,
   Checkbox,
@@ -7,9 +7,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   FormControlLabel,
   IconButton,
+  InputLabel,
   MenuItem,
+  Select,
   TextField,
   Typography,
   useMediaQuery,
@@ -22,7 +25,7 @@ import { useAppDispatch } from '~/state/hooks';
 import { setItemModal } from '~/state/slice';
 import styles from './ItemModal.module.css';
 
-const MAX_QUANTITY = 20;
+const MAX_QUANTITY = 10;
 const MAX_DESCRIPTION_LENGTH = 100;
 const QUANTITY_OPTIONS = Array.from({ length: MAX_QUANTITY }, (_, i) => i + 1);
 
@@ -46,7 +49,7 @@ export const ItemModal = ({ item }: ItemModalProps) => {
 
   const [name, setName] = useState(item?.name ?? '');
   const [description, setDescription] = useState(item?.description ?? '');
-  const [quantity, setQuantity] = useState(item?.quantity ?? 1);
+  const [quantity, setQuantity] = useState(item?.quantity);
   const [checked, setChecked] = useState(item?.checked ?? false);
 
   const dispatch = useAppDispatch();
@@ -63,7 +66,7 @@ export const ItemModal = ({ item }: ItemModalProps) => {
         checked,
         description,
         name,
-        quantity,
+        quantity: quantity || 1,
       });
     }
     handleClose();
@@ -76,16 +79,31 @@ export const ItemModal = ({ item }: ItemModalProps) => {
       fullScreen={fullScreen}
       PaperProps={{
         className: styles.paper,
+        sx: {
+          borderBottom: (theme) => `5px solid ${theme.palette.secondary.main}`,
+        },
       }}>
       <DialogTitle className={styles.headerBar}>
         SHOPPING LIST
         <IconButton onClick={handleClose}>
-          <SkipNext />
+          <LastPageSharp />
         </IconButton>
       </DialogTitle>
       <DialogContent className={styles.content}>
-        <Typography variant="h5">{`${item ? 'Edit' : 'Add'} an Item`}</Typography>
-        <Typography variant="body1">{`${item ? 'Edit' : 'Add'} your item below`}</Typography>
+        <div>
+          <Typography
+            fontSize={18}
+            fontWeight={400}
+            sx={{
+              marginBottom: 0,
+            }}>{`${item ? 'Edit' : 'Add'} an Item`}</Typography>
+          <Typography
+            fontSize={16}
+            fontWeight={400}
+            sx={{
+              color: (theme) => theme.palette.text.secondary,
+            }}>{`${item ? 'Edit' : 'Add'} your item below`}</Typography>
+        </div>
         <TextField
           placeholder="Item Name"
           value={name}
@@ -108,18 +126,25 @@ export const ItemModal = ({ item }: ItemModalProps) => {
           multiline
           fullWidth
         />
-        <TextField
-          select
-          placeholder="Quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          fullWidth>
-          {QUANTITY_OPTIONS.map((_, index) => (
-            <MenuItem key={index} value={index + 1}>
-              {index + 1}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl>
+          {!quantity && <InputLabel>How many?</InputLabel>}
+          <Select
+            value={quantity || ''}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            fullWidth>
+            {QUANTITY_OPTIONS.map((_, index) => (
+              <MenuItem
+                key={index}
+                value={index + 1}
+                sx={{
+                  padding: '0.75rem',
+                }}>
+                {index + 1}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <FormControlLabel
           control={
             <Checkbox
@@ -129,6 +154,7 @@ export const ItemModal = ({ item }: ItemModalProps) => {
             />
           }
           label="Purchased"
+          sx={{ color: (theme) => theme.palette.text.secondary }}
         />
       </DialogContent>
       <DialogActions>

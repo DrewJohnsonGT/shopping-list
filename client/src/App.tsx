@@ -8,7 +8,7 @@ export const App = () => {
   const isItemModalOpen = useAppSelector((state) => state.cart.isItemModalOpen);
   return (
     <main className={styles.page}>
-      <AppBar position="static" className={styles.appBar}>
+      <AppBar position="static" elevation={0} className={styles.appBar}>
         <Typography variant="h1" className={styles.headerTitle}>
           SHOPPING LIST
         </Typography>

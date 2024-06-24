@@ -5,6 +5,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App } from '~/App';
+import { SnackbarProvider } from '~/hooks/useSnackbar';
 import { store } from '~/state/store';
 import './index.css';
 
@@ -36,7 +37,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <QueryClientProvider client={queryClient}>
-            <App />
+            <SnackbarProvider>
+              <App />
+            </SnackbarProvider>
           </QueryClientProvider>
         </Provider>
       </ThemeProvider>

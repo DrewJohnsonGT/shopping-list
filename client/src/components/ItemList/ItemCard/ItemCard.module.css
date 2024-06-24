@@ -6,13 +6,9 @@
   border: 1px solid #d5dfe9;
 }
 
-.card:hover {
-  cursor: pointer;
-  border: 1px solid #1a73e8;
-}
-
 .text {
   display: flex;
   flex-direction: column;
   margin-right: auto;
+  margin-left: 1rem;
 }

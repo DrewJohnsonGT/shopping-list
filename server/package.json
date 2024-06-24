@@ -8,7 +8,8 @@
     "build": "tsc",
     "db:push": "prisma db push && pnpm copy-schema",
     "db:seed": "tsx prisma/seed.ts",
-    "copy-schema": "cp -R ./prisma/generated/zod ../client/src/schema"
+    "db:reset": "prisma migrate reset --force --skip-seed",
+    "copy-schema": "cp -R ./prisma/generated/zod/index.ts ../client/src/schema/index.ts"
   },
   "keywords": [],
   "author": "",

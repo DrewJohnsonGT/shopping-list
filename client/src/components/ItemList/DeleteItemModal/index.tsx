@@ -37,10 +37,17 @@ export const DeleteItemModal = () => {
     <Dialog
       open={!!itemToBeDeleted}
       onClose={handleClose}
-      fullScreen={fullScreen}>
+      fullScreen={fullScreen}
+      PaperProps={{
+        sx: { padding: '1rem', width: { sm: 410 } },
+      }}>
       <DialogTitle>Delete Item?</DialogTitle>
       <DialogContent>
-        <Typography variant="body1">
+        <Typography
+          variant="body1"
+          fontSize={14}
+          fontWeight={400}
+          color={(theme) => theme.palette.text.secondary}>
           Are you sure you want to delete this item? This can not be undone.
         </Typography>
       </DialogContent>

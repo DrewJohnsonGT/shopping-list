@@ -2,32 +2,17 @@ import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const ITEMS: Prisma.ItemCreateInput[] = [
-  {
-    name: "Tomatoes",
-    description: "The little green ones",
-    quantity: 5,
-    checked: false,
-  },
-  {
-    name: "Potatoes",
-    description: "The little red ones",
-    quantity: 10,
-    checked: false,
-  },
-  {
-    name: "Carrots",
-    description: "The little orange ones",
-    quantity: 15,
-    checked: false,
-  },
-  {
-    name: "Cucumbers",
-    description: "The little green ones",
-    quantity: 20,
-    checked: true,
-  },
-];
+const NUMBER_OF_ITEMS = 25;
+
+const ITEMS: Prisma.ItemCreateInput[] = Array.from(
+  { length: NUMBER_OF_ITEMS },
+  (_, i) => ({
+    name: `Item ${i + 1}`,
+    description: `Description for item ${i + 1}`,
+    quantity: i + 1,
+    checked: i % 2 === 0,
+  })
+);
 
 async function main() {
   console.log("Start seeding ...");

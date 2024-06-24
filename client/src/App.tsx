@@ -13,9 +13,7 @@ export const App = () => {
           SHOPPING LIST
         </Typography>
       </AppBar>
-      <div className={styles.content}>
-        <ItemList />
-      </div>
+      <ItemList />
       {isItemModalOpen && <ItemModal item={itemModalItem} />}
     </main>
   );

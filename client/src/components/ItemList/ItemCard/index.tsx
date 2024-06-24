@@ -1,5 +1,6 @@
 import { Delete, Edit } from '@mui/icons-material';
-import { Checkbox, IconButton, Typography } from '@mui/material';
+import { Box, Checkbox, IconButton, Typography } from '@mui/material';
+import { useItems } from '~/api/item';
 import { Item } from '~/schema';
 import { useAppDispatch } from '~/state/hooks';
 import { setDeleteItemModalItem, setItemModal } from '~/state/slice';
@@ -11,14 +12,39 @@ interface ItemCardProps {
 
 export const ItemCard = ({ item }: ItemCardProps) => {
   const dispatch = useAppDispatch();
-
+  const { updateItem } = useItems();
   return (
-    <div className={styles.card}>
-      <Checkbox />
-      <div className={styles.text}>
-        <Typography>{item.name}</Typography>
-        <Typography>{item.description}</Typography>
-      </div>
+    <Box
+      className={styles.card}
+      sx={{
+        '&:hover': {
+          backgroundColor: (theme) => theme.palette.grey[100],
+          cursor: 'pointer',
+        },
+        backgroundColor: (theme) =>
+          item.checked
+            ? theme.palette.grey[200]
+            : theme.palette.background.paper,
+      }}>
+      <Checkbox
+        checked={Boolean(item.checked)}
+        onChange={(e) =>
+          updateItem({
+            ...item,
+            checked: e.target.checked,
+          })
+        }
+      />
+      <Box
+        className={styles.text}
+        sx={{ textDecoration: item.checked ? 'line-through' : 'none' }}>
+        <Typography fontSize={16}>{item.name}</Typography>
+        <Typography
+          fontSize={14}
+          color={(theme) => theme.palette.text.secondary}>
+          {item.description}
+        </Typography>
+      </Box>
       <IconButton
         onClick={() => dispatch(setItemModal({ isOpen: true, item }))}>
         <Edit />
@@ -26,6 +52,6 @@ export const ItemCard = ({ item }: ItemCardProps) => {
       <IconButton onClick={() => dispatch(setDeleteItemModalItem(item))}>
         <Delete />
       </IconButton>
-    </div>
+    </Box>
   );
 };

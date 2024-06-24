@@ -37,6 +37,7 @@ app.put<Item>("/items/:id", async (req, res, next) => {
   const parseResult = ItemUpdateInputSchema.safeParse(req.body);
 
   if (!parseResult.success) {
+    console.log(parseResult.error.flatten());
     return res.status(400).json({ errors: parseResult.error.flatten() });
   }
   try {
@@ -44,6 +45,17 @@ app.put<Item>("/items/:id", async (req, res, next) => {
       where: { id: Number(id) },
       data: req.body,
     });
+    res.json(item);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE Item
+app.delete<Item>("/items/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const item = await prisma.item.delete({ where: { id: Number(id) } });
     res.json(item);
   } catch (error) {
     next(error);

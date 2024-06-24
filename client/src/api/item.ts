@@ -7,7 +7,9 @@ export const getItems = async (): Promise<Item[]> => {
   return response.json() as Promise<Item[]>;
 };
 
-export const createItem = async (item: Omit<Item, 'id'>): Promise<Item> => {
+export const createItem = async (
+  item: Omit<Item, 'id' | 'createdAt' | 'updatedAt'>,
+): Promise<Item> => {
   const response = await fetch(`${API_URL}/items`, {
     body: JSON.stringify(item),
     headers: {
@@ -21,8 +23,9 @@ export const createItem = async (item: Omit<Item, 'id'>): Promise<Item> => {
 export const updateItem = async (
   item: Partial<Item> & Pick<Item, 'id'>,
 ): Promise<Item> => {
-  const response = await fetch(`${API_URL}/items/${String(item.id)}`, {
-    body: JSON.stringify(item),
+  const { id, ...itemUpdate } = item;
+  const response = await fetch(`${API_URL}/items/${String(id)}`, {
+    body: JSON.stringify(itemUpdate),
     headers: {
       'Content-Type': 'application/json',
     },

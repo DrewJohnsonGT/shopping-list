@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { SkipNext } from '@mui/icons-material';
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   IconButton,
   MenuItem,
   TextField,
@@ -45,6 +47,7 @@ export const ItemModal = ({ item }: ItemModalProps) => {
   const [name, setName] = useState(item?.name ?? '');
   const [description, setDescription] = useState(item?.description ?? '');
   const [quantity, setQuantity] = useState(item?.quantity ?? 1);
+  const [checked, setChecked] = useState(item?.checked ?? false);
 
   const dispatch = useAppDispatch();
 
@@ -54,10 +57,10 @@ export const ItemModal = ({ item }: ItemModalProps) => {
 
   const handleSubmit = () => {
     if (item?.id) {
-      updateItem(item);
+      updateItem({ ...item, checked, description, name, quantity });
     } else {
       createItem({
-        checked: false,
+        checked,
         description,
         name,
         quantity,
@@ -117,6 +120,16 @@ export const ItemModal = ({ item }: ItemModalProps) => {
             </MenuItem>
           ))}
         </TextField>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={checked}
+              onChange={(e) => setChecked(e.target.checked)}
+              inputProps={{ 'aria-label': 'purchased' }}
+            />
+          }
+          label="Purchased"
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="info" variant="text">

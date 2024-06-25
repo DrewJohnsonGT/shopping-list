@@ -37,7 +37,6 @@ app.put<Item>("/items/:id", async (req, res, next) => {
   const parseResult = ItemUpdateInputSchema.safeParse(req.body);
 
   if (!parseResult.success) {
-    console.log(parseResult.error.flatten());
     return res.status(400).json({ errors: parseResult.error.flatten() });
   }
   try {
@@ -100,6 +99,5 @@ const errorHandlerMiddleware = (
 app.use(errorHandlerMiddleware);
 
 app.listen(PORT, () =>
-  console.log(`
-🚀 Server ready at: http://localhost:${PORT}`)
+  console.log(`🚀 Server ready at: http://localhost:${PORT}`)
 );

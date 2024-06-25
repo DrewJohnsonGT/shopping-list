@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "db:push": "prisma db push && pnpm copy-schema",
+    "build": "esbuild src/index.ts --bundle --platform=node --outdir=dist",
+    "start": "node dist/index.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
-    "db:reset": "prisma migrate reset --force --skip-seed",
-    "copy-schema": "cp -R ./prisma/generated/zod/index.ts ../client/src/schema/index.ts"
+    "db:reset": "prisma migrate reset --force --skip-seed"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,7 @@
   "dependencies": {
     "@prisma/client": "^5.15.1",
     "cors": "^2.8.5",
+    "esbuild": "^0.21.5",
     "express": "^4.19.2",
     "zod": "^3.23.8"
   }

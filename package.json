@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "docker compose -f docker-compose.yaml up",
-    "start:db": "docker compose postgres"
+    "start": "docker compose up --build",
+    "start:db": "docker compose up -d postgres"
   },
   "author": "",
   "license": "ISC"

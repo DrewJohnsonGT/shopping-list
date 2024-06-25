@@ -1,4 +1,4 @@
-FROM node:20 AS base
+FROM node:20 
 
 WORKDIR /app
 
@@ -9,13 +9,8 @@ RUN npm install
 COPY . .
 
 # Generate Prisma client
-RUN npx prisma generate
-
-# Update the db schema 
-RUN npx prisma db push
-
-# Seed the database
-RUN npx tsx prisma/seed.ts
+RUN npm run db:generate
 
 EXPOSE 8080
-CMD [ "npm", "run", "dev" ]
+
+CMD ["sh", "-c", " npm run db:push && npm run db:seed && npm run dev"]

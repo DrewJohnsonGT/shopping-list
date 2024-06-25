@@ -12,35 +12,39 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: always
     ports:
       - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
 
-  app-server:
-    links:
-      - postgres
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-      platforms:
-        - linux/amd64
+  server:
+    platform: linux/amd64
+    container_name: server
+    restart: always
+    build: ./server
     environment:
       DATABASE_URL: "postgresql://postgres:password@postgres:5432/shoppinglist"
     ports:
       - "8080:8080"
     volumes:
       - ./server/src:/app/src
-    # depends_on:
-    #   postgres:
-    #     condition: service_healthy
+    depends_on:
+      postgres:
+        condition: service_healthy
 
-  app-client:
+  client:
     platform: linux/amd64
     build: ./client
+    environment:
+      - VITE_API_END_POINT=http://localhost:8080
     ports:
       - "3000:3000"
     volumes:
       - ./client/src:/app/src
+    depends_on:
+      - postgres
+      - server
+
 volumes:
   postgres:

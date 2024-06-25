@@ -30,15 +30,15 @@ Simple shopping list - Given Figma designs and a list of technologies, build a s
 
 ## How to run locally
 
-1. Run the built project containers - this will run the built app, built server, and database containers
+1. Run the built project containers - this will run the app, server, and database containers
 
 ```bash
   npm start
 ```
 
-App will be available at [http://localhost:3000](http://localhost:3000)
+App will be available at [http://localhost:3000](http://localhost:3000) and server will be at [http://localhost:8000](http://localhost:8000) with hot-reloading enabled.
 
-If you want to run the app and client on local servers with hot-reloading, you can run the following commands:
+If you want to run the app and client on local servers manually, you can run the following commands:
 
 ```bash
   # start database container
@@ -47,12 +47,17 @@ If you want to run the app and client on local servers with hot-reloading, you c
   # start server container
   cd server
   npm install
-  npm run start
+  # Setup the database
+  npm run db:generate
+  npm run db:push
+  npm run db:seed
+  # Start the server
+  npm run dev
 
   # start app container
   cd client
   npm install
-  npm run start
+  npm run dev
 ```
 
 ## Design Decisions

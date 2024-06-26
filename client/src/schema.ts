@@ -4,6 +4,7 @@ export const ItemSchema = z.object({
   checked: z.boolean().nullable(),
   createdAt: z.coerce.date(),
   description: z.string(),
+  dueDate: z.coerce.date().nullable(),
   id: z.number().int(),
   name: z.string(),
   quantity: z.number().int(),

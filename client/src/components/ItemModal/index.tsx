@@ -19,11 +19,14 @@ import {
   useTheme,
 } from '@mui/material';
 import { Box } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useItems } from '~/api/item';
 import { Item } from '~/schema';
 import { useAppDispatch } from '~/state/hooks';
 import { setItemModal } from '~/state/slice';
 import styles from './ItemModal.module.css';
+import dayjs, { Dayjs } from 'dayjs';
 
 const MAX_QUANTITY = 10;
 const MAX_DESCRIPTION_LENGTH = 100;
@@ -51,6 +54,12 @@ export const ItemModal = ({ item }: ItemModalProps) => {
   const [description, setDescription] = useState(item?.description ?? '');
   const [quantity, setQuantity] = useState(item?.quantity);
   const [checked, setChecked] = useState(item?.checked ?? false);
+  const [dueDate, setDueDate] = useState<Dayjs | null>(
+    item?.dueDate ? dayjs(item.dueDate) : null,
+  );
+
+  console.log(dueDate);
+  console.log();
 
   const dispatch = useAppDispatch();
 
@@ -60,11 +69,19 @@ export const ItemModal = ({ item }: ItemModalProps) => {
 
   const handleSubmit = () => {
     if (item?.id) {
-      updateItem({ ...item, checked, description, name, quantity });
+      updateItem({
+        ...item,
+        checked,
+        description,
+        dueDate: dueDate?.toDate(),
+        name,
+        quantity,
+      });
     } else {
       createItem({
         checked,
         description,
+        dueDate: null,
         name,
         quantity: quantity || 1,
       });
@@ -144,6 +161,15 @@ export const ItemModal = ({ item }: ItemModalProps) => {
             ))}
           </Select>
         </FormControl>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Due Date"
+            value={dueDate}
+            onChange={(newValue: Dayjs | null) => {
+              setDueDate(newValue);
+            }}
+          />
+        </LocalizationProvider>
 
         <FormControlLabel
           control={
